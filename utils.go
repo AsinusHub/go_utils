@@ -25,16 +25,12 @@ type ErrorResponse struct {
 	Description string `json:"description"`
 }
 
-
 //Set a unique id for every request
 func RequestIdMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if id, err := uuid.NewV4(); err != nil {
-			Logger("Error: cannot create response id. ", err.Error())
-		} else {
-			c.Writer.Header().Set("X-Request-Id", id.String())
-			c.Next()
-		}
+		id := uuid.NewV4()
+		c.Writer.Header().Set("X-Request-Id", id.String())
+		c.Next()
 	}
 }
 
@@ -52,7 +48,6 @@ func SetWarningResponse(description string) ErrorResponse {
 	}
 }
 
-
 //GetCurrentDir gets directory of the go binary file and returns the path of it
 func GetCurrentDir() (error, string) {
 	ex, err := os.Executable()
@@ -68,7 +63,6 @@ func GetNowStd() string {
 	return time.Now().Format(TimeLayoutYYYYMMDD_HHMMSS)
 }
 
-
 //set and configure gin framework Logger
 func SetLogger() {
 	if err := os.Mkdir("Log", os.ModePerm); err != nil && !os.IsExist(err) {
@@ -82,7 +76,6 @@ func SetLogger() {
 		gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 	}
 }
-
 
 //Logger gets msg string and print it as JSON with a dateStamp
 func Logger(msg ...string) {
@@ -101,7 +94,6 @@ func Logger(msg ...string) {
 	}
 }
 
-
 //CreateJson gets an interface{} and marshal it to JSON and returns as []byte
 func CreateJson(i interface{}) []byte {
 	if jsonReply, err := json.Marshal(&i); err != nil {
@@ -110,7 +102,6 @@ func CreateJson(i interface{}) []byte {
 		return jsonReply
 	}
 }
-
 
 //LogAsJson takes multiple arguments and returns them as a JSON formatted string
 func LogAsJson(logMsg ...interface{}) string {
@@ -126,7 +117,6 @@ func LogAsJson(logMsg ...interface{}) string {
 	}
 	return fmt.Sprint(res...)
 }
-
 
 //GetLogFile returns log file from GetCurrentDir()/Log/currentDir/TimeFormatLogFileName.gin.log
 //if file doesn't exist creates one
@@ -155,4 +145,3 @@ func GetLogFile() (*os.File, error) {
 
 	return logFile, nil
 }
-
