@@ -66,11 +66,11 @@ func GetNowStd() string {
 //set and configure gin framework Logger
 func SetLogger() {
 	if err := os.Mkdir("Log", os.ModePerm); err != nil && !os.IsExist(err) {
-		Logger("Error on r.Run: ", fmt.Sprint(err))
+		Logger("Error in os.Mkdir: ", fmt.Sprint(err))
 		panic(err.Error())
 	}
 	if f, err := GetLogFile(); err != nil {
-		Logger("Error on r.Run: ", err.Error())
+		Logger("Error GetLogFile: ", err.Error())
 		panic(err.Error())
 	} else {
 		gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
@@ -139,7 +139,9 @@ func GetLogFile() (*os.File, error) {
 		fileName = currentDir + "/Log/" + fileName
 	}
 	logFile, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
+	if os.IsNotExist(err) {
+		logFile, err = os.Create(fileName)
+	} else if err != nil {
 		return nil, err
 	}
 
