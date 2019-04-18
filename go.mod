@@ -1,4 +1,4 @@
-module bitbucket.org/asinus/go_utils
+module github.com/AsinusHub/go_utils
 
 require (
 	github.com/gin-contrib/sse v0.0.0-20190301062529-5545eab6dad3 // indirect
