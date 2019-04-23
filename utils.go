@@ -49,14 +49,14 @@ func SetWarningResponse(description string) ErrorResponse {
 }
 
 //GetCurrentDir gets directory of the go binary file and returns the path of it
-func GetCurrentDir() (error, string) {
+func GetCurrentDir() (string, error) {
 	ex, err := os.Executable()
 	if err != nil {
-		return err, ""
+		return "", err
 	}
 	exPath := filepath.Dir(ex)
 
-	return nil, exPath
+	return exPath, nil
 }
 
 func GetNowStd() string {
