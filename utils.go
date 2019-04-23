@@ -123,7 +123,7 @@ func LogAsJson(logMsg ...interface{}) string {
 //it makes one log file every hour
 func GetLogFile() (*os.File, error) {
 	t := time.Now()
-	err, currentDir := GetCurrentDir()
+	currentDir, err := GetCurrentDir()
 	if err != nil {
 		return nil, err
 	}
